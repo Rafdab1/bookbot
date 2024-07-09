@@ -20,29 +20,27 @@ def count_characters(text):
     return count
 
 def sort_on(dict):
-    return list(dict.values())[0]
+    return dict["num"]
 
-def generate_report(word_count,character_dict):
-    #preparing for report
-    list_of_dict = []
-    for character in character_dict:
-        if character.isalpha():
-            list_of_dict.append({character: character_dict[character]})
+def chars_dict_to_sorted_list(dict):
+    sorted_list =[]
+    for character in dict:
+        sorted_list.append({"char": character, "num": dict[character]})
+        sorted_list.sort(reverse=True, key=sort_on)
+    return sorted_list
 
-    list_of_dict.sort(reverse=True ,key=sort_on)
-
-    #pirnting report
-    print (f"--- Begin report of {book_path} ---")
+def generate_report(word_count,list_of_dict):
+    print(f"--- Begin report of {book_path} ---\n")
     print(f"{word_count} words found in the document\n")
-    for dict in list_of_dict:
-        print(f"The { list(dict.keys())[0] } character was found { list(dict.values())[0] } times")
+    for ch in list_of_dict:
+        if ch['char'].isalpha():
+            print(f"The '{ch['char']}' character was found {ch['num']} times")
+
     print("\n--- End report ---")
-
-
 
 def main ():
     book_text = get_book_text(book_path)
     words_num = count_words(book_text)
     print(words_num)
-    generate_report(words_num,count_characters(book_text))
+    generate_report(words_num,chars_dict_to_sorted_list(count_characters(book_text)))
 main()
